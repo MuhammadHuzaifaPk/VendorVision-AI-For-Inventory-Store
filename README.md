@@ -3,6 +3,8 @@
 ## Main Challenge & Track Alignment
 This project was developed for the Next Founders Hackathon Hackathon. The primary challenge addressed is the inefficiency and risk inherent in manual supply chain monitoring and supplier procurement workflows.
 
+<img width="1115" height="480" alt="main2" src="https://github.com/user-attachments/assets/96711f01-b949-43cd-8bb5-902669f2037d" />
+
 ## Project Description
 
 ### The Problem
@@ -28,6 +30,8 @@ By automating threshold monitoring and purchase order drafting, VendorVision AI 
 * **Data Processing:** OpenPyXL, CSV module
 * **Frontend:** HTML5, Vanilla JavaScript, CSS3 (Static architecture, no build step)
 * **AI Integration:** Configurable LLM endpoint (defaulting to gemini-2.5-flash via API)
+
+<img width="1097" height="352" alt="api2" src="https://github.com/user-attachments/assets/0c8499d0-830b-40d8-9e21-5eca8a636b44" />
 
 ## Prerequisites
 * Python 3.10 or higher
