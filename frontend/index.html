@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VendorVision AI - Predictive Procurement</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">🤖</span>
+                <span class="logo-text">VendorVision AI</span>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label">Dashboard</span>
+                </button>
+                <button class="nav-item" data-tab="communications">
+                    <span class="nav-icon">📧</span>
+                    <span class="nav-label">AI Communications</span>
+                </button>
+                <button class="nav-item" data-tab="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-label">Settings</span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- TAB 1: DASHBOARD -->
+            <section id="tab-dashboard" class="tab-content active">
+                <header class="header">
+                    <div>
+                        <h1>Inventory & Forecast Dashboard</h1>
+                        <p class="subtitle">Predictive stockout analysis & AI automated reordering</p>
+                    </div>
+                    <button id="run-analysis-btn" class="btn primary">Run Deep Analysis</button>
+                </header>
+
+                <div class="metrics-grid">
+                    <div class="card metric">
+                        <h3>Critical Stockouts</h3>
+                        <p id="metric-critical" class="metric-value danger">0</p>
+                    </div>
+                    <div class="card metric">
+                        <h3>Low Stock Warnings</h3>
+                        <p id="metric-low" class="metric-value warning">0</p>
+                    </div>
+                    <div class="card metric">
+                        <h3>Total Items Analyzed</h3>
+                        <p id="metric-analyzed" class="metric-value">0</p>
+                    </div>
+                    <div class="card metric">
+                        <h3>Est. Reorder Value</h3>
+                        <p id="metric-value" class="metric-value">$0.00</p>
+                    </div>
+                </div>
+
+                <div class="card table-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Item / SKU</th>
+                                <th>Status</th>
+                                <th>Days Remaining</th>
+                                <th>Current Stock</th>
+                                <th>Suggested Reorder</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-body">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- TAB 2: AI COMMUNICATIONS -->
+            <section id="tab-communications" class="tab-content hidden">
+                <header class="header">
+                    <div>
+                        <h1>AI Communication History</h1>
+                        <p class="subtitle">Log of AI-generated vendor negotiation and reorder drafts</p>
+                    </div>
+                    <button id="refresh-comms-btn" class="btn secondary">🔄 Refresh Logs</button>
+                </header>
+
+                <div class="card">
+                    <div id="communications-list" class="comms-list">
+                        <p class="empty-state">No AI communications generated yet.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: SETTINGS -->
+<section id="tab-settings" class="tab-content hidden">
+    <header class="header">
+        <div>
+            <h1>Engine & Gemini API Settings</h1>
+            <p class="subtitle">Configure Google Gemini API key and fallback options</p>
+        </div>
+    </header>
+
+    <div class="card settings-card">
+        <h3>Google Gemini Configuration</h3>
+        <form id="settings-form">
+            <div class="form-group">
+                <label for="setting-api-key">Gemini API Key:</label>
+                <input type="password" id="setting-api-key" placeholder="AIzaSy..." class="form-control" />
+                <small class="text-secondary">Get your free key from Google AI Studio. Leave blank to keep active key.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="setting-model">Active Gemini Model:</label>
+                <select id="setting-model" class="form-control">
+                    <option value="gemini-3.5-flash">gemini-3.5-flash (Fast & Recommended)</option>
+                </select>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="setting-fallback" />
+                    Enable Automatic Mock Fallback Mode
+                </label>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn primary">Save Gemini Settings</button>
+                <span id="settings-status-msg" class="status-msg"></span>
+            </div>
+        </form>
+    </div>
+</section>
+
+    <!-- AI Email Draft Modal -->
+    <div id="ai-modal" class="modal hidden">
+        <div class="modal-content card">
+            <button id="close-modal" class="close-btn" aria-label="Close">&times;</button>
+            <h2>🤖 AI Supplier Email Draft</h2>
+            
+            <div id="modal-loading" class="modal-state hidden">
+                <div class="spinner"></div>
+                <p>Generating optimized negotiation email...</p>
+            </div>
+
+            <div id="modal-result" class="modal-state hidden">
+                <p class="meta-line"><strong>To:</strong> <span id="email-to"></span></p>
+                <p class="meta-line"><strong>Subject:</strong> <span id="email-subject"></span></p>
+                <div id="savings-alert" class="alert success hidden">
+                    💡 Potential Negotiated Savings: <span id="savings-amount">$0.00</span>
+                </div>
+                <textarea id="email-body" rows="9" class="form-control code-font"></textarea>
+                <div class="modal-actions">
+                    <button id="send-email-btn" class="btn primary">Send Email</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/ui.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>
